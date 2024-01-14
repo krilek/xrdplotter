@@ -49,14 +49,6 @@ export default function LineChart({ dataSets }: Props) {
         if (!dataset) {
             return;
         }
-        // const aapl = [];
-        // for (let index = 0; index < 1000; index++) {
-
-        //     aapl.push({
-        //         date: Date.now() + 100 * index,
-        //         close: 30 + index
-        //     })
-        // }
         // Declare the chart dimensions and margins.
         const width = 928;
         const height = 500;
@@ -96,6 +88,7 @@ export default function LineChart({ dataSets }: Props) {
             .attr("width", dimensions.width)
             .attr("height", dimensions.height);
         svg.selectAll("*").remove()
+
         // Add the x-axis.
         svg.append("g")
             .attr("transform", `translate(0,${height - marginBottom})`)
@@ -117,9 +110,9 @@ export default function LineChart({ dataSets }: Props) {
             //     .attr("x2", width - marginLeft - marginRight)
             //     .attr("stroke-opacity", 0.1))
             .call(g => g.append("text")
-                .attr("x", dimensions.height / 2)
-                .attr("y", 30)
-                .attr("transform", "rotate(90)")
+                .attr("x", -200)
+                .attr("y", 0)
+                .attr("transform", "rotate(-90)")
                 .attr("font-size", "2em")
                 .attr("fill", "currentColor")
                 .attr("text-anchor", "middle")
