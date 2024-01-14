@@ -67,15 +67,15 @@ export default function LineChart({ dataSets }: Props) {
 
         // Declare the x (horizontal position) scale.
         // const x = d3.scaleUtc(d3.extent(aapl, d => d.date), [marginLeft, width - marginRight]);
-        const x = d3.scaleLinear([d3.min(dataset.points, d => d.twoTheta), d3.max(dataset.points, d => d.twoTheta)], [marginLeft, width - marginRight]);
+        const x = d3.scaleLinear([d3.min(dataset.points, d => d.twoTheta) as number, d3.max(dataset.points, d => d.twoTheta) as number], [marginLeft, width - marginRight]);
         // Declare the y (vertical position) scale.
         // const y = d3.scaleLinear([0, d3.max(aapl, d => d.close)], [height - marginBottom, marginTop]);
-        const y = d3.scaleLinear([d3.min(dataset.points, d => d.intensity), d3.max(dataset.points, d => d.intensity)], [height - marginBottom, marginTop]);
+        const y = d3.scaleLinear([d3.min(dataset.points, d => d.intensity) as number, d3.max(dataset.points, d => d.intensity) as number], [height - marginBottom, marginTop]);
 
         // Declare the line generator.
         const line = d3.line()
-            .x(d => x(d.twoTheta))
-            .y(d => y(d.intensity));
+            .x(d => x(d[0]))
+            .y(d => y(d[1]));
         // Dimensions
         let dimensions = {
             width: 1000,
@@ -130,7 +130,7 @@ export default function LineChart({ dataSets }: Props) {
             .attr("fill", "none")
             .attr("stroke", "steelblue")
             .attr("stroke-width", 1.5)
-            .attr("d", line(dataset.points));
+            .attr("d", line(dataset.points.map(x => [x.twoTheta, x.intensity])));
 
         // var serializer = new XMLSerializer();
         // var xmlString = serializer.serializeToString(d3.select(svgRef.current).node());

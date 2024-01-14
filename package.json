@@ -8,6 +8,7 @@
     "test:ci": "jest --ci"
   },
   "dependencies": {
+    "@types/d3": "^7.4.3",
     "d3": "^7.8.5",
     "next": "latest",
     "react": "^18.2.0",

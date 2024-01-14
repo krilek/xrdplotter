@@ -13,7 +13,8 @@ export async function parseFilesAction(prevState: FormState, formData: FormData)
     const files = formData.getAll('files') as File[];
     if (!files || (files.length == 1 && files[0].size == 0)) {
         return {
-            xlsx: ''
+            xlsx: '',
+            json: []
         };
     }
     const contents = await Promise.all(files.map(async x => {

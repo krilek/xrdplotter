@@ -1,5 +1,5 @@
 
 export type Point = {
-    twoTheta: Number,
-    intensity: Number
+    twoTheta: number,
+    intensity: number
 }
