@@ -15,7 +15,7 @@ export default function FileForm() {
 
     return (
         <form action={formAction}>
-            <input type="file" name='files' multiple />
+            <input type="file" accept='.xy' name='files' multiple />
             <button type="submit">Send Request</button>
             <XlsxDownloadButton fileName={Date.now().toString()} b64Data={state.xlsx} />
             {/* <LineChart dataSets={state.json} /> */}

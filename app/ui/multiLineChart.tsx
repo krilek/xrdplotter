@@ -13,6 +13,9 @@ export default function MultiLineChart({ dataSets }: Props) {
     const [imgData, setImgData] = useState("");
     const [b64Data, setB64Data] = useState("");
     const [offset, setOffset] = useState(5);
+    const [height, setHeight] = useState(500);
+    const [width, setWidth] = useState(1000);
+    const [padding, setPadding] = useState(50);
     useEffect(() => {
         // D3 Code
         const dataset = dataSets[0];
@@ -24,8 +27,6 @@ export default function MultiLineChart({ dataSets }: Props) {
             x1: y.twoTheta,
             y1: y.intensity + (index * offset)
         })));
-        const width = 1000,
-            height = 500;
 
         // SELECTIONS
 
@@ -36,16 +37,27 @@ export default function MultiLineChart({ dataSets }: Props) {
             .attr("height", height);
         svg.selectAll("*").remove()
 
-        const x = d3.scaleLinear([d3.min(data1, d => d.x1) as number, d3.max(data1, d => d.x1) as number], [30, width - 30])
+        const x = d3.scaleLinear([d3.min(data1, d => d.x1) as number, d3.max(data1, d => d.x1) as number], [padding, width - padding])
         svg.append("g")
-            .attr("transform", `translate(0, ${height - 30})`)
-            .call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0));
+            .attr("transform", `translate(0, ${height - padding})`)
+            .call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0))
+            .call(g => g.append("text")
+                .attr("x", width / 2)
+                .attr("y", padding)
+                .attr("font-size", "2em")
+                .attr("fill", "currentColor")
+                .attr("text-anchor", "middle")
+                .text("TwoTheta"));
 
-        const y = d3.scaleLinear([d3.min(data1, d => d.y1) as number, d3.max(data1, d => d.y1) as number], [height - 30, 0]);
-
+        const y = d3.scaleLinear([d3.min(data1, d => d.y1) as number, d3.max(data1, d => d.y1) as number], [height - padding, padding]);
         svg.append("g")
-            .attr("transform", `translate(30, 0)`)
-            .call(d3.axisLeft(y));
+            // .attr("transform", `translate(0, 0)`)
+            .call(g => g.append("text")
+                .attr("font-size", "2em")
+                .attr("transform", `rotate(-90) translate(-${height / 2}, ${padding / 2})`)
+                .attr("text-anchor", "middle")
+                .text("Intensity"));
+        // .call(d3.axisLeft(y));
 
         const dataNest = Array.from(
             d3.group(data1, d => d.symbol), ([key, value]) => ({ key, value })
@@ -60,14 +72,19 @@ export default function MultiLineChart({ dataSets }: Props) {
             .attr("fill", "none")
             .style("stroke", d => d.key === 'a' ? 'blue' : 'red')
             .attr("d", d => line(d.value.map(x => [x.x1, x.y1])));
-    }, [offset, dataSets, svgRef.current]); // redraw chart if data changes
+    }, [offset, width, height, padding, dataSets, svgRef.current]); // redraw chart if data changes
 
     return (
-        <>
+        <div>
+            <div>
+                <input defaultValue={offset} type="range" min="5" max="300" onInput={(e: FormEvent<HTMLInputElement>) => setOffset(Number((e.target as HTMLInputElement)?.value))} />
+                <input defaultValue={width} type="range" min="400" max="4000" onInput={(e: FormEvent<HTMLInputElement>) => setWidth(Number((e.target as HTMLInputElement)?.value))} />
+                <input defaultValue={height} type="range" min="200" max="2000" onInput={(e: FormEvent<HTMLInputElement>) => setHeight(Number((e.target as HTMLInputElement)?.value))} />
+                <input defaultValue={padding} type="range" min="5" max="300" onInput={(e: FormEvent<HTMLInputElement>) => setPadding(Number((e.target as HTMLInputElement)?.value))} />
+            </div>
             <svg ref={svgRef} />
-            <input type="range" min="5" max="300" onInput={(e: FormEvent<HTMLInputElement>) => setOffset(Number((e.target as HTMLInputElement)?.value))} />
             {/* <img src={imgData} /> */}
             {/* <SvgDownloadButton b64Data={b64Data} fileName="chuj" /> */}
-        </>
+        </div>
     );
 };
