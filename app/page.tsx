@@ -4,6 +4,7 @@ export const metadata = {
     title: "App Router",
 };
 import FileForm from './ui/fileForm';
+import LineChart from './ui/lineChart';
 
 export default function Page() {
 

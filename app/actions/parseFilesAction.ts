@@ -6,6 +6,7 @@ import * as XLSX from 'xlsx';
 
 export type FormState = {
     xlsx: string
+    json: XrdDataSet[]
 }
 
 export async function parseFilesAction(prevState: FormState, formData: FormData): Promise<FormState> {
@@ -30,6 +31,7 @@ export async function parseFilesAction(prevState: FormState, formData: FormData)
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, builder.getSheet(), "Results");
     return {
+        json: datasets,
         xlsx: XLSX.write(workbook, { type: "base64", bookType: "xlsx" })
     }
 }
