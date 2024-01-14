@@ -1,6 +1,6 @@
 'use client'
 import * as d3 from "d3";
-import { useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import SvgDownloadButton from "./svgDownloadButton";
 import { XrdDataSet } from 'app/models/xrdDataSet';
 
@@ -51,21 +51,21 @@ export default function MultiLineChart({ dataSets }: Props) {
             d3.group(data1, d => d.symbol), ([key, value]) => ({ key, value })
         );
         const line = d3.line()
-            .x(d => x(d.x1))
-            .y(d => y(d.y1));
+            .x(d => x(d[0]))
+            .y(d => y(d[1]));
         svg.selectAll("path.line")
             .data(dataNest)
             .join("path")
             .attr("class", "line")
             .attr("fill", "none")
             .style("stroke", d => d.key === 'a' ? 'blue' : 'red')
-            .attr("d", d => line(d.value));
+            .attr("d", d => line(d.value.map(x => [x.x1, x.y1])));
     }, [offset, dataSets, svgRef.current]); // redraw chart if data changes
 
     return (
         <>
             <svg ref={svgRef} />
-            <input type="range" min="5" max="300" onInput={e => setOffset(e.target.value)} />
+            <input type="range" min="5" max="300" onInput={(e: FormEvent<HTMLInputElement>) => setOffset(Number((e.target as HTMLInputElement)?.value))} />
             {/* <img src={imgData} /> */}
             {/* <SvgDownloadButton b64Data={b64Data} fileName="chuj" /> */}
         </>
