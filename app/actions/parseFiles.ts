@@ -1,7 +1,8 @@
 import { XrdDataSet } from 'app/models/xrdDataSet';
-import { parseAll } from 'app/services/deserialize';
+import { parsePoints } from 'app/services/deserialize';
+import { sort } from 'd3';
 
-export async function parseFiles(files: File[]): Promise<XrdDataSet[]> {
+export const fileParser = async (files: File[]): Promise<XrdDataSet[]> => {
     if (!files || (files.length == 1 && files[0].size == 0)) {
         return [];
     }
@@ -12,8 +13,13 @@ export async function parseFiles(files: File[]): Promise<XrdDataSet[]> {
             content: await x.text()
         }
     }));
-    return contents.map(x => ({
-        name: x.fileName,
-        points: parseAll(x.content)
-    } as XrdDataSet));
+    return contents.map(x => parseDataSet(x.fileName, x.content));
+}
+
+const parseDataSet = (name: string, content: string): XrdDataSet => {
+    const points = parsePoints(content);
+    return {
+        name: name,
+        points: points
+    };
 }

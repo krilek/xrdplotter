@@ -1,3 +1,4 @@
+import useDebounced from "app/hooks/useDebounced"
 import { XrdDataSet } from "app/models/xrdDataSet"
 import { useEffect, useMemo, useState } from "react"
 
@@ -7,16 +8,14 @@ type Props = {
     onColorUpdate: (color: string) => void
 }
 export default function ColorPicker({ label, color, onColorUpdate }: Props) {
-    const [inputValue, setInputValue] = useState("");
+    const [inputValue, setInputValue] = useState(color);
     useEffect(() => {
         setInputValue(color);
     }, [color]);
+    const inputDebounced = useDebounced(inputValue, 500);
     useEffect(() => {
-        const timeoutId = setTimeout(() => {
-            onColorUpdate(inputValue);
-        }, 500);
-        return () => clearTimeout(timeoutId);
-    }, [inputValue, 500]);
+        onColorUpdate(inputDebounced);
+    }, [inputDebounced]);
 
     return (
         <div>

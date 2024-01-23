@@ -7,7 +7,10 @@ export interface XlsxFile {
     fileName: string
 }
 
-export const xlsxGenerator = (dataSets: XrdDataSet[]): XlsxFile => {
+export const xlsxGenerator = (dataSets: XrdDataSet[]): XlsxFile | null => {
+    if (dataSets.length === 0) {
+        return null;
+    }
     const fileType = "xlsx";
     const builder = new SheetBuilder();
     dataSets.forEach(dataSet => builder.addDataSet(dataSet));

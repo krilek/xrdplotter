@@ -1,7 +1,7 @@
 import { Point } from "../models/point";
 import DeserializeError from "../errors/deserializeError";
 
-export function parse(row: string, splitter: RegExp = /\s+/i): Point {
+export function parsePoint(row: string, splitter: RegExp = /\s+/i): Point {
     const parts = row.replace(/,/g, '.').split(splitter);
     if (parts.length > 2) {
         throw new DeserializeError("Received too many values to split");
@@ -20,10 +20,10 @@ export function parse(row: string, splitter: RegExp = /\s+/i): Point {
     }
 }
 
-export function parseAll(csvContent: string): Point[] {
+export function parsePoints(csvContent: string): Point[] {
     return csvContent.split(/\r?\n/i).filter(x => x).map((row, index) => {
         try {
-            return parse(row)
+            return parsePoint(row)
         } catch (error) {
             if (error instanceof DeserializeError) {
                 throw new DeserializeError(`Failed parsing row: ${index}`, error);

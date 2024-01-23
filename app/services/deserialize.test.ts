@@ -1,4 +1,4 @@
-import { parse, parseAll } from "./deserialize";
+import { parsePoint, parsePoints } from "./deserialize";
 import { Point } from "../models/point";
 
 describe("parse", () => {
@@ -39,7 +39,7 @@ describe("parse", () => {
             intensity: 10.3
         } as Point
     }])("should parse point when input is %s", ({ input, expected }) => {
-        expect(parse(input)).toEqual(expected)
+        expect(parsePoint(input)).toEqual(expected)
     })
 })
 
@@ -66,6 +66,6 @@ describe("parseAll", () => {
             intensity: 20
         }] as Point[]
     }])("should parse point when input is %s", ({ input, expected }) => {
-        expect(parseAll(input)).toEqual(expected)
+        expect(parsePoints(input)).toEqual(expected)
     })
 })

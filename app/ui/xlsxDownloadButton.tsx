@@ -1,13 +1,24 @@
+import { XlsxFile, xlsxGenerator } from "app/actions/xlsxGenerator";
+import { XrdDataSet } from "app/models/xrdDataSet";
+import { useEffect, useState } from "react";
+
 type Props = {
-    fileName: string
-    b64Data?: string
+    dataSets: XrdDataSet[]
+    generator?: (dataSet: XrdDataSet[]) => XlsxFile | null
 }
 
-export default function XlsxDownloadButton({ fileName, b64Data }: Props): JSX.Element | null {
-    if (!b64Data) {
+export default function XlsxDownloadButton({ dataSets, generator = xlsxGenerator }: Props): JSX.Element | null {
+    const [xlsxFile, setXlsxFile] = useState<XlsxFile | null>();
+
+    useEffect(() => {
+        const generatedXlsxFile = generator(dataSets);
+        setXlsxFile(generatedXlsxFile);
+    }, [dataSets, generator]);
+
+    if (!xlsxFile) {
         return null;
     }
     return (
-        <a download={`${fileName}.xlsx`} href={`data:application/vnd.ms-excel;base64,${b64Data}`}>Download {fileName}</a>
-    )
+        <a download={xlsxFile?.fileName} href={`data:application/vnd.ms-excel;base64,${xlsxFile.base64Data}`}>Download {xlsxFile.fileName}</a>
+    );
 }

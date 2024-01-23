@@ -1,16 +1,15 @@
-import { XrdDataSet } from "app/models/xrdDataSet"
-import { useEffect, useMemo, useState } from "react"
 import ColorPicker from "./colorPicker"
+import { LineColor } from "./multiLineChart"
 
 type Props = {
-    colors: { color: string, label: string }[]
-    onColorUpdate: (label: string, color: string) => void
+    colors: LineColor[]
+    onColorUpdate: (color: LineColor) => void
 }
 export default function DatasetColorPickers({ colors, onColorUpdate }: Props) {
     return (
         <div>
             {colors.map(x => (
-                <ColorPicker color={x.color} label={x.label} onColorUpdate={newColor => onColorUpdate(x.label, newColor)} />
+                <ColorPicker key={x.label} color={x.color} label={x.label} onColorUpdate={newColor => onColorUpdate({ label: x.label, color: newColor })} />
             ))}
         </div>
     )
