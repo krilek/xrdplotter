@@ -1,6 +1,4 @@
-import useDebounced from "app/hooks/useDebounced"
-import { XrdDataSet } from "app/models/xrdDataSet"
-import { useEffect, useMemo, useState } from "react"
+import { useDebouncedCallback } from "use-debounce"
 
 type Props = {
     label: string
@@ -8,20 +6,12 @@ type Props = {
     onColorUpdate: (color: string) => void
 }
 export default function ColorPicker({ label, color, onColorUpdate }: Props) {
-    const [inputValue, setInputValue] = useState(color);
-    useEffect(() => {
-        setInputValue(color);
-    }, [color]);
-    const inputDebounced = useDebounced(inputValue, 500);
-    useEffect(() => {
-        onColorUpdate(inputDebounced);
-    }, [inputDebounced]);
-
+    const debounced = useDebouncedCallback(onColorUpdate, 500);
     return (
         <div>
             <label>
-                {`Color of ${label}:`}
-                <input type="color" id={label} name={label} value={inputValue} onChange={e => setInputValue(e.target.value)} />
+                {label}
+                <input type="color" id={label} name={label} defaultValue={color} onChange={e => debounced(e.target.value)} />
             </label>
         </div>
     )

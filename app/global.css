@@ -1,6 +1,6 @@
 html,
 body {
-    padding: 0;
+    padding: 100;
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
         Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
@@ -53,8 +53,7 @@ code {
 }
 
 .draggable {
-    text-anchor: end;
-    /* text-anchor: start; */
+    text-anchor: start;
     cursor: pointer;
-    /* text-anchor: middle; */
+    text-anchor: middle;
 }
