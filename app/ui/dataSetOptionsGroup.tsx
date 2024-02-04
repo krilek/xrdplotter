@@ -3,7 +3,7 @@ import { ChartDataSetOptionsContext } from "./contexts/chartDataSetOptionsContex
 import DatasetOptions from "./datasetOptions";
 
 export default function DataSetOptionsGroup() {
-    const { optionsGroups, setColor, setLabel, setFont } = useContext(ChartDataSetOptionsContext);
+    const { optionsGroups, setColor, setLabel, setFont, setLabelSize, setStrokeWidth } = useContext(ChartDataSetOptionsContext);
     return (
         <div>
             {
@@ -13,7 +13,9 @@ export default function DataSetOptionsGroup() {
                         options={options}
                         onColorSet={setColor}
                         onFontSet={setFont}
+                        onLabelSizeSet={setLabelSize}
                         onLabelSet={setLabel}
+                        onStrokeWidthSet={setStrokeWidth}
                     />
                 ))
             }

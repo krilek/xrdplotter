@@ -14,16 +14,16 @@ export default function ChartOptions() {
     return (
         <div>
             <div>
-                <SliderInput label="Offset:" value={offset} min={1} max={100} onValueChanged={setOffset} debounceMs={200} />
+                <SliderInput label="Offset:" value={offset} min={1} step={1} max={100} onValueChanged={setOffset} debounceMs={200} />
             </div>
             <div>
-                <SliderInput label="Width:" value={width} min={400} max={4000} onValueChanged={setWidth} />
+                <SliderInput label="Width:" value={width} min={400} step={1} max={4000} onValueChanged={setWidth} />
             </div>
             <div>
-                <SliderInput label="Height:" value={height} min={200} max={2000} onValueChanged={setHeight} />
+                <SliderInput label="Height:" value={height} min={200} step={1} max={2000} onValueChanged={setHeight} />
             </div>
             <div>
-                <SliderInput label="Padding:" value={padding} min={5} max={300} onValueChanged={setPadding} />
+                <SliderInput label="Padding:" value={padding} min={5} step={1} max={300} onValueChanged={setPadding} />
             </div>
         </div>
     );
