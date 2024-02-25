@@ -1,17 +1,10 @@
 import { randomColor } from "app/actions/randomColor";
 import { Font } from "app/models/fontsEnum";
+import { LabelOptions } from "app/models/options/labelOptions";
 import { Position } from "app/models/position";
 import { DataSetName, XrdDataSet } from "app/models/xrdDataSet"
 import { ReactNode, createContext, useCallback, useContext, useEffect, useMemo, useState } from "react"
 
-export type ChartLabel = string;
-
-export interface LabelOptions {
-    font: Font;
-    pos: Position
-    content: ChartLabel
-    size: number
-}
 
 export interface DataSetOptions {
     color: string

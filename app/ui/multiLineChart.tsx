@@ -1,14 +1,10 @@
 'use client'
 import * as d3 from "d3";
-import { FormEvent, useContext, useEffect, useMemo, useRef, useState } from "react";
-import SvgDownloadButton from "./svgDownloadButton";
-import { XrdDataSet } from 'app/models/xrdDataSet';
-import DatasetColorPickers from "./datasetOptions";
+import { useContext, useEffect, useRef } from "react";
 import { ChartOptionsContext } from "./contexts/chartOptionsContextProvider";
 import { ChartDataSetOptionsContext, DataSetOptions } from "./contexts/chartDataSetOptionsContextProvider";
 import { ChartPointsContext } from "./contexts/chartPointsContextProvider";
 import { Position } from "app/models/position";
-import { BaseType } from "d3";
 
 export type ChartLabel = string;
 type DataGroup = {
@@ -25,7 +21,9 @@ export default function MultiLineChart() {
     const { height,
         width,
         padding,
-        offset } = useContext(ChartOptionsContext);
+        offset,
+        xLabelOptions,
+        yLabelOptions } = useContext(ChartOptionsContext);
     const { points } = useContext(ChartPointsContext);
     const { optionsGroups: options, setLabelPosition } = useContext(ChartDataSetOptionsContext);
     const svgRef = useRef(null);
@@ -50,7 +48,9 @@ export default function MultiLineChart() {
                 .attr("font-size", "2em")
                 .attr("fill", "currentColor")
                 .attr("text-anchor", "middle")
-                .text("TwoTheta"));
+                .attr("font-size", xLabelOptions.size)
+                .attr("font-family", xLabelOptions.font)
+                .text(xLabelOptions.content));
 
         const y = d3.scaleLinear([d3.min(points, d => d.pos.y) as number, d3.max(points, d => d.pos.y) as number], [height - padding, padding]);
         svg.append("g")
@@ -58,7 +58,9 @@ export default function MultiLineChart() {
                 .attr("font-size", "2em")
                 .attr("transform", `rotate(-90) translate(-${height / 2}, ${padding / 2})`)
                 .attr("text-anchor", "middle")
-                .text("Intensity"));
+                .attr("font-size", yLabelOptions.size)
+                .attr("font-family", yLabelOptions.font)
+                .text(yLabelOptions.content));
 
         const dataNest = Array.from(
             d3.group(points, d => d.label), ([key, value]) => ({ key, value, options: options.find(x => x.dataSetNameReference == key) } as DataGroup)
@@ -96,7 +98,7 @@ export default function MultiLineChart() {
             .style("stroke", d => options.find(x => x.dataSetNameReference == d.key)?.color ?? 'red')
             .attr("stroke-width", d => options.find(x => x.dataSetNameReference == d.key)?.strokeWidth ?? 1)
             .attr("d", d => line(d.value.map(x => [x.pos.x, x.pos.y])));
-    }, [options, offset, width, height, padding, points, svgRef.current]); // redraw chart if data changes
+    }, [options, offset, width, height, padding, points, xLabelOptions, yLabelOptions, svgRef.current]); // redraw chart if data changes
 
     return (
         <div>

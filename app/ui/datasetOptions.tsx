@@ -6,6 +6,7 @@ import FontPicker from "./fontPicker"
 import LabelInput from "./labelInput"
 import { Font } from "app/models/fontsEnum"
 import SliderInput from "./sliderInput"
+import LabelOptions from "./labelOptions"
 
 type Props = {
     options: DataSetOptions
@@ -19,23 +20,12 @@ export default function DatasetOptions({ options, onColorSet, onLabelSet, onFont
     return (
         <div>
             <p>{`Settings of: ${options.dataSetNameReference}`}</p>
-            <LabelInput
-                value={options.label.content}
-                label="Label:"
-                onLabelUpdate={(newLabel: string) => onLabelSet(newLabel, options.dataSetNameReference)}
+            <LabelOptions
+                label={options.label}
+                onLabelSet={(newLabel: string) => onLabelSet(newLabel, options.dataSetNameReference)}
+                onFontSet={(newFont: Font) => onFontSet(newFont, options.dataSetNameReference)}
+                onLabelSizeSet={(newLabelSize: number) => onLabelSizeSet(newLabelSize, options.dataSetNameReference)}
             />
-            <FontPicker
-                font={options.label.font}
-                label="Label font:"
-                onFontUpdate={(newFont: Font) => onFontSet(newFont, options.dataSetNameReference)}
-            />
-            <SliderInput
-                label="Label size:"
-                value={options.label.size}
-                min={1}
-                step={1}
-                max={50}
-                onValueChanged={(newLabelSize: number) => onLabelSizeSet(newLabelSize, options.dataSetNameReference)} />
             <ColorPicker
                 color={options.color}
                 label="Color:"

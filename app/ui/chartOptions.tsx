@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import SliderInput from "./sliderInput";
 import { ChartOptionsContext } from "./contexts/chartOptionsContextProvider";
+import LabelOptions from "./labelOptions";
 
 export default function ChartOptions() {
     const { height,
@@ -10,9 +11,28 @@ export default function ChartOptions() {
         setHeight,
         setWidth,
         setPadding,
+        xLabelOptions,
+        yLabelOptions,
+        setLabel,
+        setFont,
+        setLabelSize,
         setOffset } = useContext(ChartOptionsContext);
     return (
         <div>
+            <p>{`x label options`}</p>
+            <LabelOptions
+                label={xLabelOptions}
+                onLabelSet={(newLabel) => { setLabel(newLabel, xLabelOptions); }}
+                onLabelSizeSet={(size) => { setLabelSize(size, xLabelOptions); }}
+                onFontSet={(font) => { setFont(font, xLabelOptions); }}
+            />
+            <p>{`y label options`}</p>
+            <LabelOptions
+                label={yLabelOptions}
+                onLabelSet={(newLabel) => { setLabel(newLabel, yLabelOptions); }}
+                onLabelSizeSet={(size) => { setLabelSize(size, yLabelOptions); }}
+                onFontSet={(font) => { setFont(font, yLabelOptions); }}
+            />
             <div>
                 <SliderInput label="Offset:" value={offset} min={1} step={1} max={100} onValueChanged={setOffset} debounceMs={200} />
             </div>
